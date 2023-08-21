@@ -66,7 +66,11 @@ const PromtCard = ({
 			<div>
 				{manageTags(tag).map((t) => {
 					return (
-						<button key={t} onClick={(e) => handleTagClick(t)} className='mr-4'>
+						<button
+							key={t}
+							onClick={(e) => handleTagClick && handleTagClick(t)}
+							className='mr-4'
+						>
 							<span className='font-roboto blue_gradient text-sm'>#{t}</span>
 						</button>
 					);
