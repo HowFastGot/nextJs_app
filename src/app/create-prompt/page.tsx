@@ -23,8 +23,8 @@ function CreatePrompt() {
 		setSubmitting(true);
 
 		try {
-			const url = new URL('../api/prompt/new', 'http://localhost:3000');
-			const response = await fetch(url, {
+	
+			const response = await fetch('/api/prompt/new', {
 				method: 'POST',
 				body: JSON.stringify({
 					prompt: post.prompt,

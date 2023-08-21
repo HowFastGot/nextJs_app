@@ -26,9 +26,7 @@ function UpdatePrompt() {
 		}
 
 		try {
-			const url = new URL(`../api/prompt/${promptID}`, 'http://localhost:3000');
-
-			const response = await fetch(url, {
+			const response = await fetch(`/api/prompt/${promptID}`, {
 				method: 'PATCH',
 				body: JSON.stringify({
 					prompt: post.prompt,
@@ -48,8 +46,7 @@ function UpdatePrompt() {
 
 	useEffect(() => {
 		const fetchExistingPrompt = async () => {
-			const url = new URL(`../api/prompt/${promptID}`, 'http://localhost:3000');
-			const response = await fetch(url);
+			const response = await fetch(`/api/prompt/${promptID}`);
 
 			if (!response.ok) {
 				console.log('Error has occured while loading this edit prompt!');

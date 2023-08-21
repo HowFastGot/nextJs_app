@@ -47,11 +47,8 @@ const GuestProfilePage = () => {
 
 	useEffect(() => {
 		const fetchPromptsFromDatabase = async () => {
-			const url = new URL(
-				`../api/users/${currentUserId}/prompt`,
-				'http://localhost:3000'
-			);
-			const response = await fetch(url);
+
+			const response = await fetch('/api/users/${currentUserId}/prompt');
 
 			if (!response.ok) {
 				console.log(
