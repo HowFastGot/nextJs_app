@@ -38,6 +38,7 @@ export interface IProfileProps {
 	promptArr: IPromptData[];
 	handleEditPrompt: (id: string) => {};
 	handleDeletePrompt: (id: string) => {};
+	handleTagClick?: (id: string) => any;
 }
 
 export interface IPromptCardInterface extends Partial<IProfileProps> {
@@ -46,5 +47,4 @@ export interface IPromptCardInterface extends Partial<IProfileProps> {
 	tag: string;
 	prompt: string;
 	creator: IPromptCreator;
-	handleTagClick: (id: string) => any;
 }
