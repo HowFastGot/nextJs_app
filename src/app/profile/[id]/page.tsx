@@ -7,16 +7,11 @@ import {useRouter} from 'next/navigation';
 import Profile from '@/components/Profile';
 import {IPromptData, IPromptCreator} from '@/types/typescriptTypes';
 
-const GuestProfilePage = () => {
+const GuestProfilePage = ({params}: {params: {id: string}}) => {
 	const [guestPrompts, setGuestPrompts] = useState<IPromptData[]>([]);
 
 	const {data: session} = useSession();
 	const router = useRouter();
-
-	const currentUserId: string = useMemo(() => {
-		// @ts-ignore
-		return session?.user!.id;
-	}, [session?.user]);
 
 	const handleDeletePrompt = async (_id: string) => {
 		const isConfirmedDelete = confirm('Are you sure to delete this prompt?');
@@ -40,15 +35,13 @@ const GuestProfilePage = () => {
 			console.log('Error has occured while deliting this post!');
 		}
 	};
-
 	const handleEditPrompt = async (_id: string) => {
 		router.push(`/update-prompt?id=${_id}`);
 	};
 
 	useEffect(() => {
 		const fetchPromptsFromDatabase = async () => {
-
-			const response = await fetch('/api/users/${currentUserId}/prompt');
+			const response = await fetch(`/api/users/${params.id}/prompt`);
 
 			if (!response.ok) {
 				console.log(
@@ -60,8 +53,8 @@ const GuestProfilePage = () => {
 			setGuestPrompts(promptsData);
 		};
 
-		currentUserId && fetchPromptsFromDatabase();
-	}, [currentUserId]);
+		params.id && fetchPromptsFromDatabase();
+	}, [params.id]);
 
 	return (
 		<section className='w-full flex justify-center items-center'>
@@ -76,3 +69,4 @@ const GuestProfilePage = () => {
 	);
 };
 export default GuestProfilePage;
+
