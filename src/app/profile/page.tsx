@@ -18,6 +18,8 @@ const ProfilePage = () => {
 		return session?.user!.id;
 	}, [session?.user]);
 
+	console.log(currentUserId);
+
 	const handleDeletePrompt = async (_id: string) => {
 		const isConfirmedDelete = confirm('Are you sure to delete this prompt?');
 
@@ -47,8 +49,7 @@ const ProfilePage = () => {
 
 	useEffect(() => {
 		const fetchPromptsFromDatabase = async () => {
-
-			const response = await fetch('/api/users/${currentUserId}/prompt');
+			const response = await fetch(`/api/users/${currentUserId}/prompt`);
 
 			if (!response.ok) {
 				console.log(
