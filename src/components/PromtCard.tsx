@@ -44,7 +44,7 @@ const PromtCard = ({
 						userId={
 							creator.email.includes('skaretskiy1999@gmail.com')
 								? null // @ts-ignore
-								: session?.user!.id
+								: creator._id
 						}
 					/>
 				</figure>
