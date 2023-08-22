@@ -39,8 +39,8 @@ const Feed = () => {
 
 	useEffect(() => {
 		const fetchPromptsFromDatabase = async () => {
-			const url = new URL('../api/prompt', 'http://localhost:3000');
-			const response = await fetch(url);
+		
+			const response = await fetch('/api/prompt');
 
 			if (!response.ok) {
 				console.log('Error occured while loading of prompt from the database!');
