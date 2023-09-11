@@ -21,7 +21,6 @@ function Profile({
 						<PromtCard
 							key={_id}
 							promptID={_id}
-							image={creator.image}
 							tag={tag}
 							prompt={prompt}
 							creator={creator}
