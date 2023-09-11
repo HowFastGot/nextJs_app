@@ -4,7 +4,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import {useState, useEffect} from 'react';
-import {signIn, signOut, getProviders, useSession} from 'next-auth/react';
+import {signOut, getProviders, useSession} from 'next-auth/react';
+
+import SignInButton from './signInButton';
+
 import {
 	BuiltInProviderType,
 	ClientSafeProvider,
@@ -12,13 +15,11 @@ import {
 	ProvidersStateListType,
 } from '@/auth';
 
-import UserImage from './UserImage';
-
 const Nav = () => {
 	const {data: session} = useSession();
 
 	const [providers, setProviders] = useState<ProvidersStateListType>();
-	const [isOpenDopDown, setOpenDropDown] = useState<boolean>(false);
+	const [isOpenDropDown, setOpenDropDown] = useState<boolean>(false);
 
 	useEffect(() => {
 		const setAvailableProviders = async () => {
@@ -42,6 +43,7 @@ const Nav = () => {
 						alt='user image'
 						width={30}
 						height={30}
+						priority
 					/>
 					<p className='logo_text'>Promtopia</p>
 				</Link>
@@ -50,7 +52,7 @@ const Nav = () => {
 					{session?.user ? (
 						<div className='flex gap-3 md:gap-5'>
 							<Link href='/create-prompt' className='black_btn'>
-								Create Post
+								Create Prompt
 							</Link>
 
 							<button
@@ -62,24 +64,23 @@ const Nav = () => {
 							</button>
 
 							<figure className='block relative'>
-								<UserImage
-									userImageSrc={session.user.image ?? '/assets/images/logo.svg'}
-								/>
+								<Link href='/profile' className='rounded-full'>
+									<Image
+										src={session.user.image ?? '/assets/images/logo.svg'}
+										alt='user avatar image'
+										width='37'
+										height='37'
+										className='rounded-full object-contain'
+										quality={100}
+									></Image>
+								</Link>
 							</figure>
 						</div>
 					) : (
 						<>
 							{providers &&
 								Object.values(providers).map((provider) => {
-									return (
-										<button
-											key={provider.name}
-											className='black_btn hover:bg-red-600 hover:text-black-500'
-											onClick={() => signIn(provider.id)}
-										>
-											Sign In
-										</button>
-									);
+									return <SignInButton key={provider.id} provider={provider} />;
 								})}
 						</>
 					)}
@@ -99,7 +100,7 @@ const Nav = () => {
 								onClick={() => setOpenDropDown((prev) => !prev)}
 							></Image>
 
-							{isOpenDopDown && (
+							{isOpenDropDown && (
 								<div className='dropdown'>
 									<Link
 										href='/profile'
@@ -132,14 +133,7 @@ const Nav = () => {
 						<>
 							{providers &&
 								Object.values(providers).map((provider) => {
-									return (
-										<button
-											key={provider.name}
-											onClick={() => signIn(provider.id)}
-										>
-											Sign In
-										</button>
-									);
+									return <SignInButton key={provider.id} provider={provider} />;
 								})}
 						</>
 					)}

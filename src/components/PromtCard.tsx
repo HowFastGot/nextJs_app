@@ -1,17 +1,15 @@
 'use client';
 import {useState} from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {useSession} from 'next-auth/react';
-import {usePathname} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
 
 import {IPromptCardInterface} from '@/types/typescriptTypes';
 import {handleCopyIconChange} from '@/utils/promptCardFunctions/handleCopyIconChange';
 import {manageTags} from '@/utils/promptCardFunctions/manageTags';
 
-import UserImage from './UserImage';
-
 const PromtCard = ({
-	image,
 	tag,
 	promptID,
 	prompt,
@@ -22,6 +20,7 @@ const PromtCard = ({
 }: IPromptCardInterface) => {
 	const [isCopied, setCopied] = useState<boolean>(false);
 
+	const router = useRouter();
 	const {data: session} = useSession();
 	const pathname = usePathname();
 
@@ -35,24 +34,34 @@ const PromtCard = ({
 		// @ts-ignore
 		session.user!.id === creator._id;
 
+	const handleProfileNavigation = () => {
+		// @ts-ignore
+		if (creator._id === session?.user!.id) return router.push('/profile');
+
+		router.push(`/profile/${creator._id}?name=${creator.username}`);
+	};
+
 	return (
 		<article className='prompt_card'>
 			<div className='flex items-start justify-around gap-2 '>
 				<figure className='flex-shrink-0 flex justify-center items-center gap-3 cursor-pointer'>
-					<UserImage
-						userImageSrc={image ?? 'unknown'}
-						userId={
-							creator.email.includes('skaretskiy1999@gmail.com')
-								? null // @ts-ignore
-								: creator._id
-						}
-					/>
+					<Link href={`/profile/${creator._id}`}>
+						<Image
+							src={creator.image}
+							alt='user avatar image'
+							width='37'
+							height='37'
+							className='rounded-full object-contain'
+						></Image>
+					</Link>
 				</figure>
-				<div>
-					<h6 className='font-roboto font-semibold text-gray-900'>
+				<div onClick={handleProfileNavigation}>
+					<h6 className='font-roboto font-semibold text-gray-900 cursor-pointer'>
 						{creator.username}
 					</h6>
-					<p className='font-roboto text-sm text-gray-500'>{creator.email}</p>
+					<p className='font-roboto text-sm text-gray-500 cursor-pointer'>
+						{creator.email}
+					</p>
 				</div>
 				<button
 					className='copy_btn align-top relative -top-4'

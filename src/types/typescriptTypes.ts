@@ -1,5 +1,16 @@
 import {Dispatch, FormEvent, SetStateAction} from 'react';
 
+
+export interface ISession {
+	expires: string;
+	user: {
+		email: string;
+		id: string;
+		image: string;
+		name: 'Yevhen' | string;
+	};
+}
+
 export interface ICreatedPosts {
 	prompt: string;
 	tag: string;
@@ -42,7 +53,6 @@ export interface IProfileProps {
 }
 
 export interface IPromptCardInterface extends Partial<IProfileProps> {
-	image: string;
 	promptID: string;
 	tag: string;
 	prompt: string;

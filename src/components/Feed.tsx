@@ -3,18 +3,19 @@
 import {useState, useEffect, useDeferredValue} from 'react';
 
 import PromtCard from './PromtCard';
+
 import {IPromptData} from '@/types/typescriptTypes';
-import {defaultArray} from '@/utils/defaultPromptsArray';
 
 const Feed = () => {
-	const [prompts, setPrompts] = useState<IPromptData[]>(defaultArray);
-	const [filteredPrompts, setFilteredPrompts] =
-		useState<IPromptData[]>(defaultArray);
+	const [prompts, setPrompts] = useState<IPromptData[]>([]);
+	const [filteredPrompts, setFilteredPrompts] = useState<IPromptData[]>([]);
 
 	const [searchData, setSearchData] = useState('');
 	const defferedValue: string | number = useDeferredValue(searchData);
 
 	useEffect(() => {
+		if (prompts.length < 1) return;
+
 		const filteredArr = prompts.filter((prompt) => {
 			if (
 				prompt.creator.username
@@ -39,7 +40,6 @@ const Feed = () => {
 
 	useEffect(() => {
 		const fetchPromptsFromDatabase = async () => {
-		
 			const response = await fetch('/api/prompt');
 
 			if (!response.ok) {
@@ -79,16 +79,23 @@ function PromptCardList({
 	handleTagClick,
 }: {
 	promptArray: IPromptData[];
-	handleTagClick: (text: string) => any;
+	handleTagClick: (text: string) => void;
 }) {
+	if (promptArray.length < 1) {
+		return null;
+	}
+
 	return (
 		<div className='prompt_layout'>
 			{promptArray?.map(({creator, _id, prompt, tag}) => {
+				if (!creator._id) {
+					return null;
+				}
+
 				return (
 					<PromtCard
 						key={_id}
 						promptID={_id}
-						image={creator.image}
 						tag={tag}
 						prompt={prompt}
 						creator={creator}

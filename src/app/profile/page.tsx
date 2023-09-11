@@ -18,7 +18,7 @@ const ProfilePage = () => {
 		return session?.user!.id;
 	}, [session?.user]);
 
-	console.log(currentUserId);
+
 
 	const handleDeletePrompt = async (_id: string) => {
 		const isConfirmedDelete = confirm('Are you sure to delete this prompt?');
