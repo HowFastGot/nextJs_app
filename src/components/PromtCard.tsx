@@ -23,20 +23,19 @@ const PromtCard = ({
 	const router = useRouter();
 	const {data: session} = useSession();
 	const pathname = usePathname();
+	// @ts-ignore
+	const isPostOwner: boolean = creator._id === session?.user!.id;
 
 	const cardCopyIcon: string = isCopied
 		? '/assets/icons/tick.svg'
 		: '/assets/icons/copy.svg';
 
 	const edit_deleteBlockCondition: boolean | undefined =
-		session?.user &&
-		pathname === '/profile' &&
-		// @ts-ignore
-		session.user!.id === creator._id;
+		session?.user && pathname === '/profile' && isPostOwner;
 
 	const handleProfileNavigation = () => {
 		// @ts-ignore
-		if (creator._id === session?.user!.id) return router.push('/profile');
+		if (isPostOwner) return router.push('/profile');
 
 		router.push(`/profile/${creator._id}?name=${creator.username}`);
 	};
@@ -45,7 +44,13 @@ const PromtCard = ({
 		<article className='prompt_card'>
 			<div className='flex items-start justify-around gap-2 '>
 				<figure className='flex-shrink-0 flex justify-center items-center gap-3 cursor-pointer'>
-					<Link href={`/profile/${creator._id}`}>
+					<Link
+						href={
+							isPostOwner
+								? `/profile`
+								: `/profile/${creator._id}?name=${creator.username}`
+						}
+					>
 						<Image
 							src={creator.image}
 							alt='user avatar image'
@@ -55,7 +60,7 @@ const PromtCard = ({
 						></Image>
 					</Link>
 				</figure>
-				<div onClick={handleProfileNavigation}>
+				<div>
 					<h6 className='font-roboto font-semibold text-gray-900 cursor-pointer'>
 						{creator.username}
 					</h6>

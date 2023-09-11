@@ -1,16 +1,16 @@
 'use client';
 
-import {useState, useEffect, useMemo} from 'react';
+import {useState, useEffect} from 'react';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 
 import Profile from '@/components/Profile';
-import {IPromptData, IPromptCreator} from '@/types/typescriptTypes';
+import {IPromptCreator, IPromptData} from '@/types/typescriptTypes';
 
 const GuestProfilePage = ({params}: {params: {id: string}}) => {
 	const [guestPrompts, setGuestPrompts] = useState<IPromptData[]>([]);
+	const [userInfo, setUserInfo] = useState<IPromptCreator>();
 
-	const {data: session} = useSession();
 	const router = useRouter();
 
 	const handleDeletePrompt = async (_id: string) => {
@@ -48,9 +48,12 @@ const GuestProfilePage = ({params}: {params: {id: string}}) => {
 					'Error occured while loading of my prompt from the database!'
 				);
 			}
-			const promptsData: IPromptData[] = await response.json();
 
-			setGuestPrompts(promptsData);
+			const promptsData: {prompts: IPromptData[]; user: IPromptCreator} =
+				await response.json();
+
+			setGuestPrompts(promptsData.prompts);
+			setUserInfo(promptsData.user);
 		};
 
 		params.id && fetchPromptsFromDatabase();
@@ -59,7 +62,7 @@ const GuestProfilePage = ({params}: {params: {id: string}}) => {
 	return (
 		<section className='w-full flex justify-center items-center'>
 			<Profile
-				type={session?.user?.name ?? 'Guest'}
+				type={userInfo?.username ?? 'Another user'}
 				desc='Welcome to your personalized profile!'
 				promptArr={guestPrompts}
 				handleDeletePrompt={(_id) => handleDeletePrompt(_id)}
