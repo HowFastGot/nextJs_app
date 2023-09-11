@@ -56,9 +56,10 @@ const ProfilePage = () => {
 					'Error occured while loading of my prompt from the database!'
 				);
 			}
-			const promptsData: IPromptData[] = await response.json();
+			const promptsData: {prompts: IPromptData[]; user: IPromptCreator} =
+				await response.json();
 
-			setMyPrompts(promptsData);
+			setMyPrompts(promptsData.prompts);
 		};
 
 		currentUserId && fetchPromptsFromDatabase();

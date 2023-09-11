@@ -24,7 +24,7 @@ const PromtCard = ({
 	const {data: session} = useSession();
 	const pathname = usePathname();
 	// @ts-ignore
-	const isPostOwner: boolean = creator._id === session?.user!.id;
+	const isPostOwner: boolean = creator._id === session?.user!?.id;
 
 	const cardCopyIcon: string = isCopied
 		? '/assets/icons/tick.svg'
