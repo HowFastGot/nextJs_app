@@ -10,14 +10,13 @@ const UserSchema = new Schema({
 		type: String,
 		required: [true, 'Username is required!'],
 		match: [
-			/^(?=.{3,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9\u0400-\u04FFі._]+(?<![_.])$/,
+			/^(?=.{3,200}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9\u0400-\u04FFі&@. _-]+(?<![_.])$/,
 			'Username invalid, it should contain 5-20 alphanumeric letters and be unique!',
 		],
 	},
 	image: {
 		type: String,
 	},
-
 });
 
 const User = models.User || model('User', UserSchema);
