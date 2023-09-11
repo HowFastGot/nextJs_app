@@ -6,7 +6,7 @@ import Image from 'next/image';
 import {useState, useEffect} from 'react';
 import {signOut, getProviders, useSession} from 'next-auth/react';
 
-import SignInButton from './signInButton';
+import SignInButton from './SignInButton';
 
 import {
 	BuiltInProviderType,
